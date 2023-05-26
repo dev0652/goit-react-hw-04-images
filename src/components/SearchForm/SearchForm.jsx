@@ -22,9 +22,7 @@ class SearchForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    // console.log('this.state.query before submit:', this.state.query);
-
-    this.props.onSubmit(this.state.query);
+    this.props.onSubmit(this.state.query.trim());
     this.formReset();
   };
 

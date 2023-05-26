@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const XXX = styled.xxx`
+export const ImageCardList = styled.ul`
   display: grid;
   max-width: calc(100vw - 48px);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
