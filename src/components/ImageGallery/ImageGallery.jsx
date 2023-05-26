@@ -46,8 +46,13 @@ class ImageGallery extends Component {
         {error && <div>{error}</div>}
 
         <ImageCardList>
-          {images.map(image => (
-            <ImageGalleryItem data={image} key={image.id} />
+          {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+            <ImageGalleryItem
+              key={id}
+              thumb={webformatURL}
+              large={largeImageURL}
+              alt={tags}
+            />
           ))}
         </ImageCardList>
       </>
