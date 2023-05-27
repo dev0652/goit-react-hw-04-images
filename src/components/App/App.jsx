@@ -20,12 +20,12 @@ export class App extends Component {
 
   // >>>>> Lifecycle
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     console.log('this.query: ', this.state.query);
     console.log('prev.query: ', prevState.query);
     console.log(
       'Queries matching? :',
-      prevProps.query !== this.props.query ? 'No' : 'Yes'
+      prevState.query !== this.state.query ? 'No' : 'Yes'
     );
 
     if (this.state.query !== prevState.query) {
