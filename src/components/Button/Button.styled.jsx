@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const LoadMoreBtn = styled.button`
   display: inline-block;
-  align-self: flex-start;
 
   padding: 8px 16px;
   border-radius: 2px;

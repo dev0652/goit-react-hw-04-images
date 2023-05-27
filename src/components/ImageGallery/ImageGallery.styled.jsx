@@ -12,3 +12,10 @@ export const ImageCardList = styled.ul`
   margin-left: auto;
   margin-right: auto;
 `;
+
+// export const GalleryWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// `;

@@ -28,4 +28,6 @@ export const fetchData = async (page, q) => {
   return response;
 };
 
+// ########################################
+
 export const imagesPerPage = searchParameters.per_page;
