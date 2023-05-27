@@ -99,28 +99,23 @@ export class App extends Component {
     }
   };
 
-  // Handle clicks on image thumbnails
+  // Handle пуньк on image thumbnails
   handleImageClick = (link, alt) => {
     this.setState({
       largeImageLink: link,
       largeImageAlt: alt,
       showModal: true,
     });
-
-    console.log('clicked!');
   };
 
-  // Modal пуньк-пуньк
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  closeModal = () => {
+    this.setState({ showModal: false });
   };
 
   // >>>>> Rendering
 
   render() {
-    const { getQuery, incrementPage, toggleModal, handleImageClick } = this;
+    const { getQuery, incrementPage, closeModal, handleImageClick } = this;
     const {
       query,
       images,
@@ -148,7 +143,7 @@ export class App extends Component {
           <Modal
             link={largeImageLink}
             alt={largeImageAlt}
-            onClose={toggleModal}
+            onClose={closeModal}
           />
         )}
 
