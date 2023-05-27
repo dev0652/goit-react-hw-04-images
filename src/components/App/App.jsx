@@ -104,7 +104,6 @@ class App extends Component {
       query,
       images,
       totalHits,
-      error,
       isLoading,
       showModal,
       largeImageLink,
