@@ -9,14 +9,14 @@ const searchParameters = {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: false,
-  per_page: 12,
+  per_page: 6,
 };
 
 axios.defaults.baseURL = 'https://pixabay.com/api';
 
 // ########################################
 
-export const fetchImages = async (page, q) => {
+export const fetchData = async (page, q) => {
   const params = {
     q,
     page,
@@ -25,21 +25,7 @@ export const fetchImages = async (page, q) => {
 
   const response = await axios.get('/?', { params });
 
-  return response.data.hits;
+  return response;
 };
 
-// incrementPage() {
-//   this.page += 1;
-// }
-
-// resetPage() {
-//   this.page = 1;
-// }
-
-// get q() {
-//   return this.query;
-// }
-
-// set q(newQuery) {
-//   this.query = newQuery;
-// }
+export const imagesPerPage = searchParameters.per_page;

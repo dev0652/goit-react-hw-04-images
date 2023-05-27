@@ -10,12 +10,6 @@ export class App extends Component {
     query: '',
   };
 
-  // >>>>> Lifecycle
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.query);
-  }
-
   // >>>>> Methods
 
   getQuery = query => {
@@ -34,8 +28,7 @@ export class App extends Component {
       <Wrapper>
         <Searchbar onSubmit={getQuery} />
         {/* <div>Query: {this.state.query}</div> */}
-
-        {query && <ImageGallery query={query} />}
+        <ImageGallery query={query} />
       </Wrapper>
     );
   }
