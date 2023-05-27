@@ -1,7 +1,6 @@
 import { ThreeDots } from 'react-loader-spinner';
 import { LoaderWrapper } from './Loader.styled';
-
-// #3f51b5
+import PropTypes from 'prop-types';
 
 const Loader = ({ isLoading }) => {
   return (
@@ -10,7 +9,8 @@ const Loader = ({ isLoading }) => {
         height="80"
         width="80"
         radius="9"
-        color="#3f51b5"
+        // color="#3f51b5"
+        color="SteelBlue"
         ariaLabel="three-dots-loading"
         wrapperStyle={{}}
         wrapperClassName=""
@@ -21,3 +21,9 @@ const Loader = ({ isLoading }) => {
 };
 
 export default Loader;
+
+// ####### PropTypes ######################
+
+Loader.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+};

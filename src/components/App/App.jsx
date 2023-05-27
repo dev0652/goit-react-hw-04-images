@@ -15,7 +15,7 @@ import PixabayLogo from 'components/PixabayLogo';
 
 // ###### App ####################################
 
-class App extends Component {
+export default class App extends Component {
   state = {
     query: '',
     page: 1,
@@ -30,7 +30,6 @@ class App extends Component {
   };
 
   // >>>>> Lifecycle
-
   async componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
 
@@ -98,7 +97,6 @@ class App extends Component {
   };
 
   // >>>>> Rendering
-
   render() {
     const { getNewQuery, incrementPage, closeModal, handleImageClick } = this;
     const {
@@ -119,8 +117,6 @@ class App extends Component {
 
         {isLoading && <Loader isLoading={isLoading} />}
 
-        {/* {error && <div style={{ color: 'red' }}>{error}</div>} */}
-
         <ImageGallery images={images} clickHandler={handleImageClick} />
 
         {showModal && (
@@ -138,5 +134,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

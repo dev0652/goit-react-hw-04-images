@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import toast from 'react-hot-toast';
 
-// import { Formik } from 'formik';
-
 import { Button, Form, Input } from './SearchForm.styled';
-
 import { ReactComponent as MagnifyingGlass } from '../../icons/search.svg';
+
 // ########################################
 
 class SearchForm extends Component {
@@ -69,6 +68,8 @@ class SearchForm extends Component {
 }
 
 export default SearchForm;
+
+// ####### PropTypes ######################
 
 SearchForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,

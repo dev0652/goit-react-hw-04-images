@@ -1,18 +1,15 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageCardList } from './ImageGallery.styled';
+import PropTypes from 'prop-types';
 
 // ########################################
-
-// function handler(event) {
-//   alert('event.currentTarget: ', event.currentTarget);
-// }
 
 const ImageGallery = ({ images, clickHandler }) => {
   return (
     <ImageCardList>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
         <ImageGalleryItem
-          id={id}
+          key={id}
           thumb={webformatURL}
           alt={tags}
           clickHandler={() => clickHandler(largeImageURL, tags)}
@@ -24,5 +21,9 @@ const ImageGallery = ({ images, clickHandler }) => {
 
 export default ImageGallery;
 
-// onClick={() => clickHandler(largeImageURL, tags)}
-// onClick={clickHandler}
+// ####### PropTypes ######################
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.node).isRequired,
+  clickHandler: PropTypes.func.isRequired,
+};

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import { Overlay, ModalContent } from './Modal.styled';
 
@@ -9,9 +10,7 @@ const modalRoot = document.querySelector('#modal-root');
 
 // #######################################
 
-// Props: { link, alt, onClose }
-
-class Modal extends Component {
+export default class Modal extends Component {
   //
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown);
@@ -49,4 +48,11 @@ class Modal extends Component {
     );
   }
 }
-export default Modal;
+
+// ####### PropTypes ######################
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  link: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+};
