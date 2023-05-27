@@ -8,9 +8,10 @@ import Searchbar from 'components/Searchbar';
 import { Wrapper } from './App.styled';
 import ImageGallery from 'components/ImageGallery';
 import Button from 'components/Button';
-import PixabayLogo from 'components/PixabayLogo';
 import Loader from 'components/Loader';
 import Modal from 'components/Modal';
+
+import PixabayLogo from 'components/PixabayLogo';
 
 // ###### App ####################################
 

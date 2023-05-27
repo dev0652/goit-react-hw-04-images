@@ -4,8 +4,9 @@ import toast from 'react-hot-toast';
 
 // import { Formik } from 'formik';
 
-import { Button, Form, Input, Label } from './SearchForm.styled';
+import { Button, Form, Input } from './SearchForm.styled';
 
+import { ReactComponent as MagnifyingGlass } from '../../icons/search.svg';
 // ########################################
 
 class SearchForm extends Component {
@@ -50,8 +51,8 @@ class SearchForm extends Component {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Button type="submit">
-          <Label>Search</Label>
+        <Button type="submit" aria-label="Search">
+          <MagnifyingGlass width="24" height="24" />
         </Button>
 
         <Input
