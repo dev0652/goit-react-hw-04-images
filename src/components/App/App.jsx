@@ -51,7 +51,7 @@ export class App extends Component {
   };
 
   resetState = () => {
-    this.setState({ page: 1, images: [], totalHits: null });
+    this.setState({ page: 1, images: [], totalHits: null, error: null });
   };
 
   fetchImages = async () => {
@@ -67,23 +67,14 @@ export class App extends Component {
         throw new Error('Sorry, there are no images matching your query.');
       }
 
-      // if (!totalHits) {
-      //   throw new Error('Sorry, there are no images matching your query.');
-      // } else {
-      //   this.setState(prevState => ({
-      //     images: [...prevState.images, ...hits],
-      //     totalHits,
-      //     page: prevState.page + 1,
-      //   }));
-      // }
-
       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
         totalHits,
       }));
       //
-    } catch (error) {
-      this.setState({ error: error.toString() });
+    } catch ({ message }) {
+      this.setState({ error: message });
+      console.error(message);
       //
     } finally {
       this.setState({ isLoading: false });
@@ -93,20 +84,17 @@ export class App extends Component {
   // >>>>> Rendering
 
   render() {
-    const {
-      getQuery,
-      state: { query, images },
-    } = this;
+    const { getQuery } = this;
+    const { query, images, error, isLoading } = this.state;
 
     return (
       <Wrapper>
         <Searchbar onSubmit={getQuery} />
         {query ? `Current query is "${query}"` : 'No query yet'}
 
-        {this.state.error && (
-          <div style={{ color: 'red' }}>{this.state.error}</div>
-        )}
-        <ImageGallery images={images} />
+        {isLoading && <div>isLoading</div>}
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+        <ImageGallery images={images} isLoading={isLoading} />
       </Wrapper>
     );
   }
