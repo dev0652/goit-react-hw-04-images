@@ -2,9 +2,9 @@ import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
 // ########################################
 
-const ImageGalleryItem = ({ thumb, alt, clickHandler }) => {
+const ImageGalleryItem = ({ id, thumb, alt, clickHandler }) => {
   return (
-    <GalleryItem>
+    <GalleryItem key={id}>
       <GalleryImage src={thumb} alt={alt} height="165" onClick={clickHandler} />
     </GalleryItem>
   );
