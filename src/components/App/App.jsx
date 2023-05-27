@@ -10,6 +10,7 @@ import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { Button } from 'components/Button/Button';
 import { PixabayLogo } from 'components/PixabayLogo/PixabayLogo';
 import { Loader } from 'components/Loader/Loader';
+import Modal from 'components/Modal/Modal';
 
 // ########################################
 
@@ -20,6 +21,9 @@ export class App extends Component {
     images: [],
     totalHits: null,
     isLoading: false,
+    showModal: false,
+    largeImageLink: null,
+    largeImageAlt: null,
   };
 
   // >>>>> Lifecycle
@@ -50,23 +54,24 @@ export class App extends Component {
 
   // >>>>> Methods
 
+  // Get search query from form
   getQuery = query => {
     this.setState({ query });
   };
 
+  // Reset current state to defaults
   resetState = () => {
     this.setState({ page: 1, images: [], totalHits: null, error: null });
   };
 
+  // Increment page count (Load More button)
   incrementPage = () => {
-    this.setState(
-      prevState => ({
-        page: prevState.page + 1,
-      }),
-      console.log('Page:', this.state.page)
-    );
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
+  // Fetch images from server, update state
   fetchImages = async () => {
     const { page, query } = this.state;
 
@@ -94,11 +99,38 @@ export class App extends Component {
     }
   };
 
+  // Handle clicks on image thumbnails
+  handleImageClick = (link, alt) => {
+    this.setState({
+      largeImageLink: link,
+      largeImageAlt: alt,
+      showModal: true,
+    });
+
+    console.log('clicked!');
+  };
+
+  // Modal пуньк-пуньк
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
   // >>>>> Rendering
 
   render() {
-    const { getQuery, incrementPage } = this;
-    const { query, images, totalHits, error, isLoading } = this.state;
+    const { getQuery, incrementPage, toggleModal } = this;
+    const {
+      query,
+      images,
+      totalHits,
+      error,
+      isLoading,
+      showModal,
+      largeImageLink,
+      largeImageAlt,
+    } = this.state;
 
     return (
       <Wrapper>
@@ -109,10 +141,16 @@ export class App extends Component {
         {isLoading && <Loader isLoading={isLoading} />}
 
         {error && <div style={{ color: 'red' }}>{error}</div>}
-        {/* {images.length > 0 && images.length < totalHits && !isLoading && (
-          <ImageGallery images={images} isLoading={isLoading} />
-        )} */}
+
         <ImageGallery images={images} />
+
+        {showModal && (
+          <Modal
+            link={largeImageLink}
+            alt={largeImageAlt}
+            onClose={toggleModal}
+          />
+        )}
 
         {images.length > 0 && images.length < totalHits && !isLoading && (
           <Button onClick={incrementPage} isLoading={isLoading} />

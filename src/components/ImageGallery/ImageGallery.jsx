@@ -3,16 +3,15 @@ import { ImageCardList } from './ImageGallery.styled';
 
 // ########################################
 
-const ImageGallery = ({ images, isLoading }) => {
+const ImageGallery = ({ images, handleImageClick }) => {
   return (
     <ImageCardList>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
         <ImageGalleryItem
           key={id}
           thumb={webformatURL}
-          large={largeImageURL}
           alt={tags}
-          isLoading={isLoading}
+          onClick={() => handleImageClick(largeImageURL, tags)}
         />
       ))}
     </ImageCardList>
