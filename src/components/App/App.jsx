@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
 
 import { fetchData } from 'api';
 
@@ -10,6 +9,7 @@ import { Wrapper } from './App.styled';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { Button } from 'components/Button/Button';
 import { PixabayLogo } from 'components/PixabayLogo/PixabayLogo';
+import { Loader } from 'components/Loader/Loader';
 
 // ########################################
 
@@ -106,24 +106,13 @@ export class App extends Component {
 
         {!query && <PixabayLogo />}
 
-        {isLoading && this.state.page === 1 && (
-          <ThreeDots
-            height="80"
-            width="80"
-            radius="9"
-            color="#3f51b5"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
-            visible={isLoading}
-          />
-        )}
+        {isLoading && <Loader isLoading={isLoading} />}
 
         {error && <div style={{ color: 'red' }}>{error}</div>}
         {/* {images.length > 0 && images.length < totalHits && !isLoading && (
           <ImageGallery images={images} isLoading={isLoading} />
         )} */}
-        <ImageGallery images={images} isLoading={isLoading} />
+        <ImageGallery images={images} />
 
         {images.length > 0 && images.length < totalHits && !isLoading && (
           <Button onClick={incrementPage} isLoading={isLoading} />
