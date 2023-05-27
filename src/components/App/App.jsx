@@ -21,24 +21,27 @@ export class App extends Component {
   // >>>>> Lifecycle
 
   async componentDidUpdate(_, prevState) {
-    console.log('this.query: ', this.state.query);
-    console.log('prev.query: ', prevState.query);
-    console.log(
-      'Queries matching? :',
-      prevState.query !== this.state.query ? 'No' : 'Yes'
-    );
+    // console.log('this.query: ', this.state.query);
+    // console.log('prev.query: ', prevState.query);
+    // console.log(
+    //   'Queries matching? :',
+    //   prevState.query !== this.state.query ? 'No' : 'Yes'
+    // );
 
     if (this.state.query !== prevState.query) {
-      // this.resetState();
+      this.resetState();
       await this.fetchImages();
     }
+
     // if (this.state.images.length > prevState.images.length) {
     //   console.log(
     //     'Different images.length? ',
     //     this.state.images.length > prevState.images.length
     //   );
-    // this.fetchImages();
-    // }
+
+    if (this.state.page > 1) {
+      await this.fetchImages();
+    }
   }
 
   // >>>>> Methods
@@ -60,6 +63,10 @@ export class App extends Component {
       const response = await fetchData(page, query);
       const { hits, totalHits } = response.data;
 
+      if (!totalHits) {
+        throw new Error('Sorry, there are no images matching your query.');
+      }
+
       // if (!totalHits) {
       //   throw new Error('Sorry, there are no images matching your query.');
       // } else {
@@ -76,10 +83,7 @@ export class App extends Component {
       }));
       //
     } catch (error) {
-      // this.setState({
-      //   // error: "Couldn't fetch images. Please reload the page",
-      //   error,
-      // });
+      this.setState({ error: error.toString() });
       //
     } finally {
       this.setState({ isLoading: false });
@@ -99,6 +103,9 @@ export class App extends Component {
         <Searchbar onSubmit={getQuery} />
         {query ? `Current query is "${query}"` : 'No query yet'}
 
+        {this.state.error && (
+          <div style={{ color: 'red' }}>{this.state.error}</div>
+        )}
         <ImageGallery images={images} />
       </Wrapper>
     );
