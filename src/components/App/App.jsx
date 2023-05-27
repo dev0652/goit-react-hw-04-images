@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
-
 import { fetchData } from 'api';
+import toast from 'react-hot-toast';
 
-// ########################################
+// ###### Components in App ######################
 
-import Searchbar from 'components/Searchbar/Searchbar';
+import Searchbar from 'components/Searchbar';
 import { Wrapper } from './App.styled';
-import ImageGallery from 'components/ImageGallery/ImageGallery';
-import { Button } from 'components/Button/Button';
-import { PixabayLogo } from 'components/PixabayLogo/PixabayLogo';
-import { Loader } from 'components/Loader/Loader';
-import Modal from 'components/Modal/Modal';
+import ImageGallery from 'components/ImageGallery';
+import Button from 'components/Button';
+import PixabayLogo from 'components/PixabayLogo';
+import Loader from 'components/Loader';
+import Modal from 'components/Modal';
 
-// ########################################
+// ###### App ####################################
 
-export class App extends Component {
+class App extends Component {
   state = {
     query: '',
     page: 1,
     images: [],
     totalHits: null,
     isLoading: false,
+    error: null,
+
     showModal: false,
     largeImageLink: '',
     largeImageAlt: '',
@@ -29,34 +31,44 @@ export class App extends Component {
   // >>>>> Lifecycle
 
   async componentDidUpdate(_, prevState) {
-    // console.log('this.query: ', this.state.query);
-    // console.log('prev.query: ', prevState.query);
-    // console.log(
-    //   'Queries matching? :',
-    //   prevState.query !== this.state.query ? 'No' : 'Yes'
-    // );
+    const { query, page } = this.state;
 
-    if (this.state.query !== prevState.query) {
-      this.resetState();
-      await this.fetchImages();
-    }
+    if (query !== prevState.query || page !== prevState.page) {
+      //
+      const { page, query } = this.state;
 
-    // if (this.state.images.length > prevState.images.length) {
-    //   console.log(
-    //     'Different images.length? ',
-    //     this.state.images.length > prevState.images.length
-    //   );
+      try {
+        this.setState({ isLoading: true });
 
-    if (this.state.page > prevState.page) {
-      await this.fetchImages();
+        const response = await fetchData(page, query);
+        const { hits, totalHits } = response.data;
+
+        if (!totalHits) {
+          throw new Error('Sorry, there are no images matching your query.');
+        }
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...hits],
+          totalHits,
+        }));
+        //
+      } catch ({ message }) {
+        this.setState({ error: message });
+        // console.warn(message);
+        toast.error(message);
+
+        //
+      } finally {
+        this.setState({ isLoading: false });
+      }
     }
   }
 
   // >>>>> Methods
 
-  // Get search query from form
-  getQuery = query => {
-    this.setState({ query });
+  // Get the query string from the search box + reset current state
+  getNewQuery = query => {
+    this.setState({ query, images: [], page: 1 });
   };
 
   // Reset current state to defaults
@@ -71,34 +83,6 @@ export class App extends Component {
     }));
   };
 
-  // Fetch images from server, update state
-  fetchImages = async () => {
-    const { page, query } = this.state;
-
-    try {
-      this.setState({ isLoading: true });
-
-      const response = await fetchData(page, query);
-      const { hits, totalHits } = response.data;
-
-      if (!totalHits) {
-        throw new Error('Sorry, there are no images matching your query.');
-      }
-
-      this.setState(prevState => ({
-        images: [...prevState.images, ...hits],
-        totalHits,
-      }));
-      //
-    } catch ({ message }) {
-      this.setState({ error: message });
-      console.error(message);
-      //
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
   // Handle пуньк on image thumbnails
   handleImageClick = (link, alt) => {
     this.setState({
@@ -109,13 +93,13 @@ export class App extends Component {
   };
 
   closeModal = () => {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, largeImageLink: '', largeImageAlt: '' });
   };
 
   // >>>>> Rendering
 
   render() {
-    const { getQuery, incrementPage, closeModal, handleImageClick } = this;
+    const { getNewQuery, incrementPage, closeModal, handleImageClick } = this;
     const {
       query,
       images,
@@ -129,13 +113,13 @@ export class App extends Component {
 
     return (
       <Wrapper>
-        <Searchbar onSubmit={getQuery} />
+        <Searchbar onSubmit={getNewQuery} />
 
-        {!query && <PixabayLogo />}
+        {(!query || !totalHits) && <PixabayLogo />}
 
         {isLoading && <Loader isLoading={isLoading} />}
 
-        {error && <div style={{ color: 'red' }}>{error}</div>}
+        {/* {error && <div style={{ color: 'red' }}>{error}</div>} */}
 
         <ImageGallery images={images} clickHandler={handleImageClick} />
 
@@ -148,9 +132,11 @@ export class App extends Component {
         )}
 
         {images.length > 0 && images.length < totalHits && !isLoading && (
-          <Button onClick={incrementPage} isLoading={isLoading} />
+          <Button onClick={incrementPage} />
         )}
       </Wrapper>
     );
   }
 }
+
+export default App;

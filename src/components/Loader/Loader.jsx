@@ -3,7 +3,7 @@ import { LoaderWrapper } from './Loader.styled';
 
 // #3f51b5
 
-export const Loader = ({ isLoading }) => {
+const Loader = ({ isLoading }) => {
   return (
     <LoaderWrapper>
       <ThreeDots
@@ -19,3 +19,5 @@ export const Loader = ({ isLoading }) => {
     </LoaderWrapper>
   );
 };
+
+export default Loader;

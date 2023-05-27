@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import toast from 'react-hot-toast';
 
 // import { Formik } from 'formik';
 
@@ -22,7 +23,15 @@ class SearchForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state.query.trim());
+    const normalizedQuery = this.state.query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      toast.error('Your search query is empty');
+      this.formReset();
+      return;
+    }
+
+    this.props.onSubmit(normalizedQuery);
     this.formReset();
   };
 

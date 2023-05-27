@@ -11,7 +11,7 @@ const modalRoot = document.querySelector('#modal-root');
 
 // Props: { link, alt, onClose }
 
-export default class Modal extends Component {
+class Modal extends Component {
   //
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown);
@@ -49,3 +49,4 @@ export default class Modal extends Component {
     );
   }
 }
+export default Modal;

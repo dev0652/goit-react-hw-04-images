@@ -1,6 +1,6 @@
 import { ButtonWrapper, LoadMoreBtn } from './Button.styled';
 
-export const Button = ({ onClick, isLoading }) => {
+const Button = ({ onClick, isLoading }) => {
   return (
     <ButtonWrapper>
       <LoadMoreBtn type="button" onClick={onClick} disabled={isLoading}>
@@ -9,3 +9,5 @@ export const Button = ({ onClick, isLoading }) => {
     </ButtonWrapper>
   );
 };
+
+export default Button;
