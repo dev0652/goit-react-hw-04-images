@@ -12,7 +12,7 @@ const ImageGallery = ({ images, clickHandler }) => {
     <ImageCardList>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
         <ImageGalleryItem
-          key={id}
+          id={id}
           thumb={webformatURL}
           alt={tags}
           clickHandler={() => clickHandler(largeImageURL, tags)}
