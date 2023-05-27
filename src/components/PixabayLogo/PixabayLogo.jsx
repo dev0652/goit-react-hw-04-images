@@ -4,7 +4,7 @@ import { LogoWrapper } from './PixabayLogo.styled';
 const PixabayLogo = () => {
   return (
     <LogoWrapper>
-      <Logo fill="lightgray" />
+      <Logo fill="rgba(176, 196, 222, 0.2)" />
     </LogoWrapper>
   );
 };
