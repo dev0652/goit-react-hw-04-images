@@ -9,7 +9,7 @@ const modalRoot = document.querySelector('#modal-root');
 
 // #######################################
 
-// Props: { link, tags }
+// Props: { link, alt, onClose }
 
 export default class Modal extends Component {
   //
@@ -23,8 +23,7 @@ export default class Modal extends Component {
 
   handleKeydown = event => {
     if (event.code === 'Escape') {
-      console.log('Escape pressed');
-
+      // console.log('Escape pressed');
       this.props.onClose();
     }
   };

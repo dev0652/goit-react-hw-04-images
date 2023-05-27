@@ -3,7 +3,11 @@ import { ImageCardList } from './ImageGallery.styled';
 
 // ########################################
 
-const ImageGallery = ({ images, handleImageClick }) => {
+// function handler(event) {
+//   alert('event.currentTarget: ', event.currentTarget);
+// }
+
+const ImageGallery = ({ images, clickHandler }) => {
   return (
     <ImageCardList>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
@@ -11,7 +15,7 @@ const ImageGallery = ({ images, handleImageClick }) => {
           key={id}
           thumb={webformatURL}
           alt={tags}
-          onClick={() => handleImageClick(largeImageURL, tags)}
+          clickHandler={() => clickHandler(largeImageURL, tags)}
         />
       ))}
     </ImageCardList>
@@ -19,3 +23,6 @@ const ImageGallery = ({ images, handleImageClick }) => {
 };
 
 export default ImageGallery;
+
+// onClick={() => clickHandler(largeImageURL, tags)}
+// onClick={clickHandler}

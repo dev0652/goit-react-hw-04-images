@@ -22,8 +22,8 @@ export class App extends Component {
     totalHits: null,
     isLoading: false,
     showModal: false,
-    largeImageLink: null,
-    largeImageAlt: null,
+    largeImageLink: '',
+    largeImageAlt: '',
   };
 
   // >>>>> Lifecycle
@@ -120,7 +120,7 @@ export class App extends Component {
   // >>>>> Rendering
 
   render() {
-    const { getQuery, incrementPage, toggleModal } = this;
+    const { getQuery, incrementPage, toggleModal, handleImageClick } = this;
     const {
       query,
       images,
@@ -142,7 +142,7 @@ export class App extends Component {
 
         {error && <div style={{ color: 'red' }}>{error}</div>}
 
-        <ImageGallery images={images} />
+        <ImageGallery images={images} clickHandler={handleImageClick} />
 
         {showModal && (
           <Modal
