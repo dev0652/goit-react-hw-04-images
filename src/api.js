@@ -9,7 +9,7 @@ const searchParameters = {
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: false,
-  per_page: 6,
+  per_page: 3,
 };
 
 axios.defaults.baseURL = 'https://pixabay.com/api';

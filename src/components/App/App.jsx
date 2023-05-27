@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ThreeDots } from 'react-loader-spinner';
+
 import { fetchData } from 'api';
 
 // ########################################
@@ -6,6 +8,8 @@ import { fetchData } from 'api';
 import Searchbar from 'components/Searchbar/Searchbar';
 import { Wrapper } from './App.styled';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
+import { Button } from 'components/Button/Button';
+import { PixabayLogo } from 'components/PixabayLogo/PixabayLogo';
 
 // ########################################
 
@@ -39,7 +43,7 @@ export class App extends Component {
     //     this.state.images.length > prevState.images.length
     //   );
 
-    if (this.state.page > 1) {
+    if (this.state.page > prevState.page) {
       await this.fetchImages();
     }
   }
@@ -52,6 +56,15 @@ export class App extends Component {
 
   resetState = () => {
     this.setState({ page: 1, images: [], totalHits: null, error: null });
+  };
+
+  incrementPage = () => {
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1,
+      }),
+      console.log('Page:', this.state.page)
+    );
   };
 
   fetchImages = async () => {
@@ -84,17 +97,37 @@ export class App extends Component {
   // >>>>> Rendering
 
   render() {
-    const { getQuery } = this;
-    const { query, images, error, isLoading } = this.state;
+    const { getQuery, incrementPage } = this;
+    const { query, images, totalHits, error, isLoading } = this.state;
 
     return (
       <Wrapper>
         <Searchbar onSubmit={getQuery} />
-        {query ? `Current query is "${query}"` : 'No query yet'}
 
-        {isLoading && <div>isLoading</div>}
+        {!query && <PixabayLogo />}
+
+        {isLoading && this.state.page === 1 && (
+          <ThreeDots
+            height="80"
+            width="80"
+            radius="9"
+            color="#3f51b5"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={isLoading}
+          />
+        )}
+
         {error && <div style={{ color: 'red' }}>{error}</div>}
+        {/* {images.length > 0 && images.length < totalHits && !isLoading && (
+          <ImageGallery images={images} isLoading={isLoading} />
+        )} */}
         <ImageGallery images={images} isLoading={isLoading} />
+
+        {images.length > 0 && images.length < totalHits && !isLoading && (
+          <Button onClick={incrementPage} isLoading={isLoading} />
+        )}
       </Wrapper>
     );
   }
