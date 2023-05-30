@@ -24,5 +24,5 @@ export default ImageGallery;
 // ####### PropTypes ######################
 
 ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.node).isRequired,
+  images: PropTypes.array.isRequired,
 };

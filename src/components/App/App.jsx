@@ -72,7 +72,7 @@ export default function App() {
       <ImageGallery images={images} />
 
       {images.length > 0 && images.length < totalHits && !isLoading && (
-        <Button onClick={incrementPage} />
+        <Button onClick={incrementPage} isLoading={isLoading} />
       )}
     </Wrapper>
   );
