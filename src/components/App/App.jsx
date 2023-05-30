@@ -31,6 +31,8 @@ export default function App() {
     async function fetchImages() {
       try {
         setIsLoading(true);
+        toast.remove();
+
         const response = await fetchData(page, query);
         const { hits, totalHits } = response.data;
 
