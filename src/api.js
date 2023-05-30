@@ -23,7 +23,9 @@ export const fetchData = async (page, q) => {
     ...searchParameters,
   };
 
-  const response = await axios.get('/?', { params });
+  const controller = new AbortController();
+
+  const response = await axios.get('/?', { params, signal: controller.signal });
 
   return response;
 };

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { fetchData } from 'api';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 // ###### Components in App ######################
@@ -12,125 +11,86 @@ import Loader from 'components/Loader';
 import Modal from 'components/Modal';
 
 import PixabayLogo from 'components/PixabayLogo';
+import { fetchData } from 'api';
 
 // ###### App ####################################
 
-export default class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    images: [],
-    totalHits: null,
-    isLoading: false,
-    error: null,
+export default function App() {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [totalHits, setTotalHits] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [largeImageLink, setLargeImageLink] = useState('');
+  const [largeImageAlt, setLargeImageAlt] = useState('');
 
-    showModal: false,
-    largeImageLink: '',
-    largeImageAlt: '',
-  };
-
-  // >>>>> Lifecycle
-  async componentDidUpdate(_, prevState) {
-    const { query, page } = this.state;
-
-    if (query !== prevState.query || page !== prevState.page) {
-      //
-      const { page, query } = this.state;
-
+  useEffect(() => {
+    async function fetchImages() {
       try {
-        this.setState({ isLoading: true });
-
+        setIsLoading(true);
         const response = await fetchData(page, query);
         const { hits, totalHits } = response.data;
 
         if (!totalHits) {
           throw new Error('Sorry, there are no images matching your query.');
         }
-
-        this.setState(prevState => ({
-          images: [...prevState.images, ...hits],
-          totalHits,
-        }));
+        setImages(prev => [...prev, ...hits]);
+        setTotalHits(totalHits);
         //
       } catch ({ message }) {
-        this.setState({ error: message });
-        // console.warn(message);
         toast.error(message);
-
         //
       } finally {
-        this.setState({ isLoading: false });
+        setIsLoading(false);
       }
     }
-  }
 
-  // >>>>> Methods
+    fetchImages();
+  }, [page, query]);
 
   // Get the query string from the search box + reset current state
-  getNewQuery = query => {
-    this.setState({ query, images: [], page: 1 });
-  };
-
-  // Reset current state to defaults
-  resetState = () => {
-    this.setState({ page: 1, images: [], totalHits: null, error: null });
+  const getNewQuery = query => {
+    setQuery(query);
+    setPage(1);
+    setImages([]);
   };
 
   // Increment page count (Load More button)
-  incrementPage = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+  const incrementPage = () => {
+    setPage(prevState => prevState + 1);
   };
 
   // Handle пуньк on image thumbnails
-  handleImageClick = (link, alt) => {
-    this.setState({
-      largeImageLink: link,
-      largeImageAlt: alt,
-      showModal: true,
-    });
+  const handleImageClick = (link, alt) => {
+    setShowModal(true);
+    setLargeImageLink(link);
+    setLargeImageAlt(alt);
   };
 
-  closeModal = () => {
-    this.setState({ showModal: false, largeImageLink: '', largeImageAlt: '' });
+  const closeModal = () => {
+    setShowModal(false);
+    setLargeImageLink('');
+    setLargeImageAlt('');
   };
 
-  // >>>>> Rendering
-  render() {
-    const { getNewQuery, incrementPage, closeModal, handleImageClick } = this;
-    const {
-      query,
-      images,
-      totalHits,
-      isLoading,
-      showModal,
-      largeImageLink,
-      largeImageAlt,
-    } = this.state;
+  return (
+    <Wrapper>
+      <Searchbar onSubmit={getNewQuery} />
 
-    return (
-      <Wrapper>
-        <Searchbar onSubmit={getNewQuery} />
+      {(!query || !totalHits) && <PixabayLogo />}
 
-        {(!query || !totalHits) && <PixabayLogo />}
+      {isLoading && <Loader isLoading={isLoading} />}
 
-        {isLoading && <Loader isLoading={isLoading} />}
+      <ImageGallery images={images} clickHandler={handleImageClick} />
 
-        <ImageGallery images={images} clickHandler={handleImageClick} />
+      {showModal && (
+        <Modal link={largeImageLink} alt={largeImageAlt} onClose={closeModal} />
+      )}
 
-        {showModal && (
-          <Modal
-            link={largeImageLink}
-            alt={largeImageAlt}
-            onClose={closeModal}
-          />
-        )}
-
-        {images.length > 0 && images.length < totalHits && !isLoading && (
-          <Button onClick={incrementPage} />
-        )}
-      </Wrapper>
-    );
-  }
+      {images.length > 0 && images.length < totalHits && !isLoading && (
+        <Button onClick={incrementPage} />
+      )}
+    </Wrapper>
+  );
 }

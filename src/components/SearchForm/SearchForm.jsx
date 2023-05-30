@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import toast from 'react-hot-toast';
@@ -8,66 +8,44 @@ import { ReactComponent as MagnifyingGlass } from '../../icons/search.svg';
 
 // ########################################
 
-class SearchForm extends Component {
-  state = {
-    query: '',
+export default function SearchForm({ onSubmit }) {
+  const [query, setQuery] = useState('');
+
+  const handleChange = event => {
+    event.preventDefault();
+    setQuery(event.target.value);
   };
 
-  // >>>>> Methods
-
-  handleChange = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const input = event.target.value;
-    this.setState({ query: input });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const normalizedQuery = this.state.query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase();
 
     if (!normalizedQuery) {
       toast.error('Your search query is empty');
-      this.formReset();
-      return;
+    } else {
+      onSubmit(normalizedQuery);
     }
 
-    this.props.onSubmit(normalizedQuery);
-    this.formReset();
+    setQuery('');
   };
 
-  formReset = () => {
-    this.setState({ query: '' });
-  };
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Button type="submit" aria-label="Search">
+        <MagnifyingGlass width="24" height="24" />
+      </Button>
 
-  // >>>>> Rendering
-
-  render() {
-    const {
-      handleChange,
-      handleSubmit,
-      state: { query },
-    } = this;
-
-    return (
-      <Form onSubmit={handleSubmit}>
-        <Button type="submit" aria-label="Search">
-          <MagnifyingGlass width="24" height="24" />
-        </Button>
-
-        <Input
-          type="text"
-          autocomplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-          value={query}
-          onChange={handleChange}
-        />
-      </Form>
-    );
-  }
+      <Input
+        type="text"
+        autocomplete="off"
+        autoFocus
+        placeholder="Search images and photos"
+        value={query}
+        onChange={handleChange}
+      />
+    </Form>
+  );
 }
-
-export default SearchForm;
 
 // ####### PropTypes ######################
 
