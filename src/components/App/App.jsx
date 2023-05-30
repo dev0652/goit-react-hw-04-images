@@ -8,7 +8,6 @@ import { Wrapper } from './App.styled';
 import ImageGallery from 'components/ImageGallery';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
-import Modal from 'components/Modal';
 
 import PixabayLogo from 'components/PixabayLogo';
 import { fetchData } from 'api';
@@ -21,9 +20,6 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [totalHits, setTotalHits] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [largeImageLink, setLargeImageLink] = useState('');
-  const [largeImageAlt, setLargeImageAlt] = useState('');
 
   useEffect(() => {
     if (!query) return;
@@ -65,19 +61,6 @@ export default function App() {
     setPage(prevState => prevState + 1);
   };
 
-  // Handle пуньк on image thumbnails
-  const handleImageClick = (link, alt) => {
-    setShowModal(true);
-    setLargeImageLink(link);
-    setLargeImageAlt(alt);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setLargeImageLink('');
-    setLargeImageAlt('');
-  };
-
   return (
     <Wrapper>
       <Searchbar onSubmit={getNewQuery} />
@@ -86,11 +69,7 @@ export default function App() {
 
       {isLoading && <Loader isLoading={isLoading} />}
 
-      <ImageGallery images={images} clickHandler={handleImageClick} />
-
-      {showModal && (
-        <Modal link={largeImageLink} alt={largeImageAlt} onClose={closeModal} />
-      )}
+      <ImageGallery images={images} />
 
       {images.length > 0 && images.length < totalHits && !isLoading && (
         <Button onClick={incrementPage} />

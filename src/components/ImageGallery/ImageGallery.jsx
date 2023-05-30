@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 // ########################################
 
-const ImageGallery = ({ images, clickHandler }) => {
+const ImageGallery = ({ images }) => {
   return (
     <ImageCardList>
       {images.map(({ id, webformatURL, largeImageURL, tags }) => (
         <ImageGalleryItem
           key={id}
           thumb={webformatURL}
+          largeImage={largeImageURL}
           alt={tags}
-          clickHandler={() => clickHandler(largeImageURL, tags)}
         />
       ))}
     </ImageCardList>
@@ -25,5 +25,4 @@ export default ImageGallery;
 
 ImageGallery.propTypes = {
   images: PropTypes.arrayOf(PropTypes.node).isRequired,
-  clickHandler: PropTypes.func.isRequired,
 };
