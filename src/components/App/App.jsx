@@ -26,6 +26,8 @@ export default function App() {
   const [largeImageAlt, setLargeImageAlt] = useState('');
 
   useEffect(() => {
+    if (!query) return;
+
     async function fetchImages() {
       try {
         setIsLoading(true);
