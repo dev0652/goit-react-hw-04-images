@@ -24,8 +24,9 @@ export const fetchData = async (page, q) => {
   };
 
   const controller = new AbortController();
+  const signal = controller.signal;
 
-  const response = await axios.get('/?', { params, signal: controller.signal });
+  const response = await axios.get('/?', { params, signal });
 
   return response;
 };
